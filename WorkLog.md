@@ -10,7 +10,7 @@
 3/9
 1. Ask ground truth MSFT to discord
 2. Change period from ttm to quarterly but no change on result.Change to "annual" fix the issue, ttm is "railing Twelve Months", this is more up to date data but it may include some weak months.
-3. Change backtest period from **1** day to **7** days and only execute on **Monday**, This means the sample time will be every week. This may not the right way as it will reduce the graunulatiy and may introduce error for an algorithem
+3. Change backtest period from **1** day to **7** days and only execute on **Monday**, This means the sample time will be every week. This may not the right way as it will reduce the graunulatiy and may introduce error for an algorithem, however, this make evaludate faster
 4. Integrate DeepSeekAPI and this is prefered as it is **much cheaper**! 
 
 3/8

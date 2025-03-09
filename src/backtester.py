@@ -329,9 +329,13 @@ class Backtester:
             self.portfolio_values = []
 
         for current_date in dates:
+
+            if current_date.weekday() != 0:  # 0 represents Monday
+                continue
+
             lookback_start = (current_date - timedelta(days=30)).strftime("%Y-%m-%d")
             current_date_str = current_date.strftime("%Y-%m-%d")
-            previous_date_str = (current_date - timedelta(days=1)).strftime("%Y-%m-%d")
+            previous_date_str = (current_date - timedelta(days=7)).strftime("%Y-%m-%d")
 
             # Skip if there's no prior day to look back (i.e., first date in the range)
             if lookback_start == current_date_str:
