@@ -6,12 +6,19 @@
 3. Backtest code learning
 4. Local llm onboarding (Couple git branch already have it)
 
+# TODO
+1. Cost reduction for invalid ticker: https://github.com/virattt/ai-hedge-fund/pull/88/commits
+2. refactor api.py for free financial or ib interface migration: 
+https://github.com/virattt/ai-hedge-fund/pull/42
+https://github.com/virattt/ai-hedge-fund/issues/123
+
 # Log
 3/9
 1. Ask ground truth MSFT to discord
 2. Change period from ttm to quarterly but no change on result.Change to "annual" fix the issue, ttm is "railing Twelve Months", this is more up to date data but it may include some weak months.
 3. Change backtest period from **1** day to **7** days and only execute on **Monday**, This means the sample time will be every week. This may not the right way as it will reduce the graunulatiy and may introduce error for an algorithem, however, this make evaludate faster
 4. Integrate DeepSeekAPI and this is prefered as it is **much cheaper**! 
+6. Pay $20 and test out **AMD** and **COST**, each query cost **$0.4**
 
 3/8
 1. Understand code structure
