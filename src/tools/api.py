@@ -19,6 +19,16 @@ from data.models import (
 # Global cache instance
 _cache = get_cache()
 
+class CompanyFacts:
+    """A class representing company facts like industry, sector, and country."""
+    
+    def __init__(self, industry: str = "", sector: str = "", country: str = ""):
+        self.industry = industry
+        self.sector = sector
+        self.country = country
+
+    def __repr__(self):
+        return f"CompanyFacts(industry={self.industry}, sector={self.sector}, country={self.country})"
 
 def get_prices(ticker: str, start_date: str, end_date: str) -> list[Price]:
     """Fetch price data from cache or API."""
@@ -280,3 +290,50 @@ def prices_to_df(prices: list[Price]) -> pd.DataFrame:
 def get_price_data(ticker: str, start_date: str, end_date: str) -> pd.DataFrame:
     prices = get_prices(ticker, start_date, end_date)
     return prices_to_df(prices)
+
+
+def get_company_facts(ticker: str) -> CompanyFacts | None:
+    """Fetch company facts (e.g., industry, sector, country) from cache or API."""
+
+    # Check cache first
+    cached_data = _cache.get_company_facts(ticker)
+    if cached_data:
+        # Assuming cached data is in the format of CompanyFacts object
+        return CompanyFacts(**cached_data)  # If cached, directly return as a CompanyFacts object
+    
+    # If not in cache, fetch from API
+    headers = {}
+    if api_key := os.environ.get("FINANCIAL_DATASETS_API_KEY"):
+        headers["X-API-KEY"] = api_key    
+    url = f"https://api.financialdatasets.ai/company/facts/?ticker={ticker}"
+    
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Error fetching company facts: {ticker} - {e}")
+
+    if response.status_code != 200:
+        raise Exception(f"Error fetching company facts: {ticker} - {response.status_code} - {response.text}")
+
+    # Parse response as a dictionary
+    data = response.json()
+
+    # Extract the "facts" part of the response
+    company_facts_data = data.get("company_facts")
+    if not company_facts_data:
+        return None
+
+    # Create CompanyFacts instance from response data
+    company_facts = CompanyFacts(
+        industry=company_facts_data.get("industry", ""),
+        sector=company_facts_data.get("sector", ""),
+        country=company_facts_data.get("country", "")
+    )
+    
+    print(f"Company facts for {ticker}: {company_facts}")
+
+    # Cache the results as a dictionary (we store the attributes of the CompanyFacts object)
+    _cache.set_company_facts(ticker, company_facts.__dict__)
+
+    return company_facts

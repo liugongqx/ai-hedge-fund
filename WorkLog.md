@@ -11,8 +11,15 @@
 2. refactor api.py for free financial or ib interface migration: 
 https://github.com/virattt/ai-hedge-fund/pull/42
 https://github.com/virattt/ai-hedge-fund/issues/123
+3. refacator cache for reuse financial dataset  same ticker still take 0.4
 
 # Log
+3/24
+1. Add get company fact API 
+2. Add adaptable threshold for fundamental evaluation
+3/13
+1. Token cache does not work still $.4 per calling
+2. 
 3/9
 1. Ask ground truth MSFT to discord
 2. Change period from ttm to quarterly but no change on result.Change to "annual" fix the issue, ttm is "railing Twelve Months", this is more up to date data but it may include some weak months.
